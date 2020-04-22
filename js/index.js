@@ -20,13 +20,21 @@ var simpleLevelPlan = `
 
 /// ------------ Create Level Reader ----------- ///
 
+// creating a class that stores the level object. 
+// Its argument is the string that defines the level.
+// To interpret the characters in the plan, the Level constructor uses the
+// levelChars object, which maps background elements to strings and actor characters to classes.
+
 class Level {
     constructor(plan) {
         let rows = plan.trim().split("\n").map(l => [...l]);
         this.height = rows.length;
         this.width = rows[0].length;
+        // stored in an array of objects
         this.startActors = [];
-
+        // each 'rows' holds an array of arrays with characters, the rows of the level plan.
+        // map passes the array index as a second argument to the mapping function, 
+        // which tells us the x- and y-coordinates of a given character.
         this.rows = rows.map((row,y) => {
             return row.map((ch, x) => {
                 let type = levelChars[ch];
@@ -42,6 +50,7 @@ class Level {
 
 /// --------------- Set Status -------------- /// 
 
+//State class to track the state of a running game.
 class State {
     constructor(level,actors,status) {
         this.level = level;
@@ -60,6 +69,9 @@ class State {
 
 /// ---------- Position ---------- ///
 
+// The position of the actor is stored as a Vec object.
+// the Vec class is used for the two-dimensional values, such as
+// the position and size of actors.
 class Vec {
     constructor(x, y) {
         this.x = x; 
@@ -75,6 +87,8 @@ class Vec {
 
 /// ------------- Actors in the Game ------------ ///
 
+// static create method is used by the Level constructor 
+// to create an actor from a character in the level plan.
 class Player {
     constructor(pos, speed) {
         this.pos = pos;
@@ -87,6 +101,8 @@ class Player {
         return new Player(pos.plus(new Vec(0, -0.5)), new Vec(0, 0));
     }
 }
+// the size of neither/non of the Actors will change. So it is stored on .prototype rather than in the object itself 
+// using type would create and return a new Vec object every time the property is read
 Player.prototype.size = new Vec(0.8, 1.5);
 
 class Lava {
@@ -98,6 +114,7 @@ class Lava {
     get type() {
         return "lava";
     }
+    // conditions to check for 'moving' lava
     static create(pos, ch) {
         if (ch == "=") {
             return new Lava(pos, new Vec(2, 0));
@@ -109,6 +126,10 @@ class Lava {
     }
 }
 Lava.prototype.size = new Vec(1, 1);
+
+// coins would move up and down synchronously, the starting phase of each coin is randomized t avoid that.
+// multiply the value returned by Math.random by 2 π to give the coin a random starting position on the wave
+// why 2 π ? the width of a wave a circle produces, is 2 π 
 
 class Coin {
     constructor(pos, basePos, wobble) {
@@ -126,6 +147,7 @@ class Coin {
 }
 Coin.prototype.size = new Vec(0.6, 0.6);
 
+// define the levelChars object that maps the plan characters to either background grid types or actor classes.
 const levelChars = {
     ".": "empty", 
     "#": "wall",
@@ -183,7 +205,7 @@ function drawGrid(level) {
     }, ...level.rows.map(row => 
         elt("tr", {style: `height: ${scale}px`},
         // elt("tr", {style: "height: " + scale + "px"}, 
-        ...row.map(type => elt("td", {class: type})))  // am ende die ... entfernen und schauen ob es nicht trotzdem ALLE "row" elmente anspricht
+        ...row.map(type => elt("td", {class: type}))) 
     ));
 }
 
