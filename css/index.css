@@ -10,10 +10,12 @@
 
 .lava {
     background: rgb(255, 100, 100);
+    /* border: solid 1px black; */
 }
 
 .wall {
     background: white;
+    border: solid 1px black;
 }
 
 .actor {
