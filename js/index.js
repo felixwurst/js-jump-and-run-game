@@ -51,6 +51,8 @@ class Level {
                 return "empty";
             });
         });
+        // console.log(rows);
+        
     }
 }
 
@@ -114,7 +116,6 @@ class Player {
 }
 // the size of neither/non of the Actors will change. So it is stored on .prototype rather than in the object itself
 // using type would create and return a new Vec object every time the property is read
-// ? using type?
 Player.prototype.size = new Vec(0.8, 1.5);
 
 class Lava {
@@ -192,7 +193,7 @@ function elt(name, attrs, ...children) {
         dom.setAttribute(attr, attrs[attr]);
     }
     for (let child of children) {
-        dom.appendChild(child);
+        dom.appendChild(child); // append children to dom(the parent)
     }
     // console.log(dom);
     return dom;
@@ -273,7 +274,11 @@ DOMDisplay.prototype.scrollPlayerIntoView = function(state) {
         bottom = top + height;
 
     let player = state.player;
-    let center = player.pos.plus(player.size.times(0.5)).times(scale);
+    let playerCenterVec = player.size.times(0.5);
+    let playerNewPosVec = player.pos.plus(playerCenterVec)
+    let center = playerNewPosVec.times(scale);
+
+    // console.log(center.x);
 
     if (center.x < left + margin) {
         this.dom.scrollLeft = center.x - margin;
@@ -289,7 +294,6 @@ DOMDisplay.prototype.scrollPlayerIntoView = function(state) {
 
 
 /// ------------------ Movement ------------------ ///
-
 
 Level.prototype.touches = function(pos, size, type) {
     var xStart = Math.floor(pos.x); // floor rounds down
@@ -313,6 +317,8 @@ Level.prototype.touches = function(pos, size, type) {
 
 State.prototype.update = function(time, keys) {
     let actors = this.actors.map(actor => actor.update(time, this, keys));
+    console.log(actors);
+    
     let newState = new State(this.level, actors, this.status);
 
     if (newState.status != "playing") {
