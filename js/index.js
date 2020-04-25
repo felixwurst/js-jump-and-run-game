@@ -283,6 +283,9 @@ function drawActors(actors) {
 // this deletes the moving actor and redraws it with its new position 
 // and adds it to the main div(superDiv in this.dom) and gives it now the class: 'game playing'
 // Since there will be only a few actors in the game, redrawing all of them is not so wasteful on the data-space
+// ? remove and draw the actors again and again
+// ? syncState is a property of DOMDisplay.prototype, because it doesn't change, 
+// ? it is a function inside this property, it is used inside the async function runGame
 DOMDisplay.prototype.syncState = function(state) {
     if (this.actorLayer) {
         this.actorLayer.remove();
@@ -430,6 +433,8 @@ Coin.prototype.collide = function(state) {
     let filtered = state.actors.filter(a => a != this);
     let status = state.status;
  // if touching the last coins the status is changed to "won"
+    // ? wenn durch .some kein Akteur mehr mit type "coin" gefunden wird, ist das Spiel gewonnen
+    // ! dreht true zu false
     if (!filtered.some(a => a.type == "coin")) {
         status = "won";
     }
