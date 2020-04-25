@@ -388,7 +388,7 @@ State.prototype.update = function(time, keys) {
     // only the player will actually read keys, since that’s the only actor that’s controlled
     // by the keyboard.
     let actors = this.actors.map(actor => actor.update(time, this, keys));
-    console.log(actors);
+    // console.log(actors);
     
     let newState = new State(this.level, actors, this.status);
 
@@ -430,7 +430,12 @@ Lava.prototype.collide = function(state) {
 }
 // if touching the coins they will vanish 
 Coin.prototype.collide = function(state) {
+    // console.log(this);
+    
     let filtered = state.actors.filter(a => a != this);
+    // console.log(state.actors);
+    // console.log(filtered);
+    
     let status = state.status;
  // if touching the last coins the status is changed to "won"
     // ? wenn durch .some kein Akteur mehr mit type "coin" gefunden wird, ist das Spiel gewonnen
@@ -451,13 +456,16 @@ Coin.prototype.collide = function(state) {
 // If no obstacle blocks that new position, it moves there. If there is an obstacle the behavior depends on the type
 // Bouncing lava inverts its speed by multiplying it by -1 so that it starts moving in the opposite direction.
 Lava.prototype.update = function(time, state) {
-    let newPos = this.pos.plus(this.speed.times(time));
 
-    if (!state.level.touches(newPos, this.size, "wall")) {
+    let posVec = this.pos;
+    let speedVec = this.speed.times(time); 
+    let newPos = posVec.plus(speedVec);
+
+    if (!state.level.touches(newPos, this.size, "wall")) { // ? if lava doesn't touch wall
         return new Lava(newPos, this.speed, this.reset);
-    } else if (this.reset) {
+    } else if (this.reset) { // ? if lava touches the wall and has a reset-value
         return new Lava(this.reset, this.speed, this.reset);
-    } else {
+    } else { // ? if lava touches the wall and hasn't a reset-value
         return new Lava(this.pos, this.speed.times(-1));
     }
 }
@@ -475,9 +483,6 @@ Coin.prototype.update = function (time) {
     return new Coin(this.basePos.plus(new Vec(0, wobblePos)), this.basePos, wobble);
 }
 
-const playerXSpeed = 7;
-const gravity = 30;
-const jumpSpeed = 17;
 
 // Player motion is handled separately per axis
 // because hitting the floor should not prevent horizontal motion, and hitting a
@@ -487,6 +492,11 @@ const jumpSpeed = 17;
 // motion, it is used. Otherwise, the old position is kept.
 // Vertical motion works similar but has to simulate jumping and gravity.
 // The player’s vertical speed ( ySpeed ) is first anticipated to account for gravity
+
+const playerXSpeed = 7;
+const gravity = 30;
+const jumpSpeed = 17;
+
 Player.prototype.update = function (time, state, keys) {
     let xSpeed = 0;
 
@@ -497,13 +507,16 @@ Player.prototype.update = function (time, state, keys) {
         xSpeed += playerXSpeed;
     }
     let pos = this.pos;
-    let movedX = pos.plus(new Vec(xSpeed * time, 0));
-
+    let newXVec = new Vec(xSpeed * time, 0);
+    let movedX = pos.plus(newXVec);
+    
     if (!state.level.touches(movedX, this.size, "wall")) {
         pos = movedX;
     }
     let ySpeed = this.speed.y + time * gravity;
-    let movedY = pos.plus(new Vec(0, ySpeed * time));
+    // console.log(ySpeed);
+    let newYVec = new Vec(0, ySpeed * time);
+    let movedY = pos.plus(newYVec);
 
     if (!state.level.touches(movedY, this.size, "wall")) {
         pos = movedY;
@@ -519,10 +532,12 @@ Player.prototype.update = function (time, state, keys) {
 
 function trackKeys(keys) {
     let down = Object.create(null);
-
+    
     function track(event) {
+        // console.log(event);
         if (keys.includes(event.key)) {
             down[event.key] = event.type == "keydown";
+            // console.log(down);
             event.preventDefault();
         }
     }
@@ -539,7 +554,7 @@ function runAnimation(frameFunc) {
 
     function frame(time) {
         if (lastTime != null) {
-            let timeStep = Math.min(time - lastTime, 100) / 1000;  // 100ms / 1000 => seconds
+            let timeStep = Math.min(time - lastTime, 100) / 1000;  // ms / 1000 => seconds
             if (frameFunc(timeStep) === false) {
                 return;
             }
@@ -547,7 +562,7 @@ function runAnimation(frameFunc) {
         lastTime = time;
         requestAnimationFrame(frame);
     }
-    requestAnimationFrame(frame)
+    requestAnimationFrame(frame);
 }
 
 function runLevel(level, Display){
@@ -580,6 +595,7 @@ async function runGame(plans, Display){
 
         if(status == "won"){
             level++;
+            console.log("won");  
         }
     }
     console.log("You've Won!!!");
