@@ -80,8 +80,9 @@ class State {
 // The position of the actor is stored as a Vec object.
 // the Vec class is used for the two-dimensional values, such as
 // the position and size of actors.
-// ? Vec object with x- and y-value --> Vec {x: 1, y: 1}
-// ? function plus for vector addition, function times for vector multiplication, e.g. for jumping
+// Vec object with x- and y-value --> Vec {x: 1, y: 1}
+// function plus for vector addition, function times for vector multiplication, e.g. for jumping
+// main "helping" object to be able to find and give the different actors their position in the grid of the game.
 class Vec {
     constructor(x, y) {
         this.x = x;
@@ -114,8 +115,10 @@ class Player {
         return new Player(newPos, speedVec);
     }
 }
-// the size of neither/non of the Actors will change. So it is stored on .prototype rather than in the object itself
+// the size of neither/non of the Actors will change.
+// So it is stored on .prototype rather than in the object itself
 // using type would create and return a new Vec object every time the property is read
+
 Player.prototype.size = new Vec(0.8, 1.5);
 
 class Lava {
@@ -144,8 +147,9 @@ Lava.prototype.size = new Vec(1, 1);
 
 // coins would move up and down synchronously, the starting phase of each coin is randomized to avoid that.
 // multiply the value returned by Math.random by 2 π to give the coin a random starting position on the wave
-// why 2 π ? the width of a wave a circle produces, is 2 π
-// ? Umfang eines Kreises = 2π * r, random gibt Zahl zwischen 0 und 1 aus, also eine Position auf der Kreisbahn
+// the width/range the wave of a circle produces, is 2 π
+// range of a Circle = 2π * r, random gives a number between 0 and 1, also a position on the circular orbit.
+// beginning = 0, end = 1, 0 and 1 are same position
 // ? Anfang = 0, Ende = 1, 0 und 1 gleiche Position 
 
 class Coin {
@@ -184,6 +188,7 @@ const levelChars = {
 // this function provides a short and precise way to create an element and give it some attributes
 // and child nodes. It is going to be reused in the following functions afterwards every time new
 // elements and attributes are needed.
+// it also adds the children elements to their to the parent
 // ? name => which html-element(e.g. Div, table...), attrs => classes or style-attributes for this element,
 // ...children => div(game) => table(background) => tr(row) => td(block)
 
@@ -205,6 +210,16 @@ function elt(name, attrs, ...children) {
 // the DOMDisplay is called so because it uses DOM elements to show the level.
 // A display is created by giving it a parent element to which it should append
 // itself and a level object.
+// draw grid has to be read in combination with the class DOMDisplay. they belong together. it is a big recursive line.
+// the function could have also be written right inside the class
+// it is a dynamic way to create the elements, classes and attributes of the background-grid, 
+// which is divided like table-rows with table data. 
+// by separation the code is more accessible and readable. because you can use the function for different classes if needed. 
+// it creates the element, gives each of them an attribute, adds children of the element to the main element/parent before. and so on. 
+// this.dom acts like a super div with all the information inside(from drawGrid) which
+// each time is then added dynamically again to the body which is the master parent. 
+
+
 class DOMDisplay {
     constructor(parent, level) {
         this.dom = elt("div", {class: "game"}, drawGrid(level));
@@ -220,6 +235,14 @@ class DOMDisplay {
 
 // pixel scale
 // scale constant gives the number of pixels that a single unit takes up on the screen.
+// each char/actor has its position on the grid. It is the frame on which the vector object
+// aligns the position for the moveable actors when it comes to use
+// draw grid has to be read in combination with the class DOMDisplay. they belong together. it is a big recursive line.
+// the function could have also be written right inside the class
+// it is a dynamic way to create the elements, classes and attributes of the background-grid, which is divided like table-rows with table data. 
+// by separation the code is more accessible and readable. because you can use the function for different classes if needed. 
+
+
 const scale = 20;
 
 function drawGrid(level) {
@@ -231,6 +254,13 @@ function drawGrid(level) {
 
 
 /// --------------- Drawing Of Single Actors With Scaling And Positioning --------- ///
+
+
+// creating DOM-elements
+// we use the elt function here again as recursive but only once. 
+// we create one div without attributes but all the children from the parameter actors.
+// its mapped to get every single "actor"-element which is then given an element again, an attribute, but this time no children.
+// the size attributes are the size and position and scale. which have been set before 
 
 function drawActors(actors) {
     // console.log(actors);
@@ -247,9 +277,12 @@ function drawActors(actors) {
 
 /// --------- Show Current Position of Actor and Redraw in New Position ------- ///
 
-// use syncState to do so.
+// the syncState method is used to make the display show a given state
 // The actorLayer property will be used to track the element that holds the actors so that they
 // can be easily removed and replaced
+// this deletes the moving actor and redraws it with its new position 
+// and adds it to the main div(superDiv in this.dom) and gives it now the class: 'game playing'
+// Since there will be only a few actors in the game, redrawing all of them is not so wasteful on the data-space
 DOMDisplay.prototype.syncState = function(state) {
     if (this.actorLayer) {
         this.actorLayer.remove();
@@ -261,6 +294,15 @@ DOMDisplay.prototype.syncState = function(state) {
 };
 
 /// ------ Detect Position of Actor to Set Position of Game Screen ------ ///
+
+// we want the view point of the player to be frankly centered. 
+// first to not be able to see the entire level, but also so 
+// the game frame moves with the players movement.
+// The way the player’s center is found shows how the methods on the Vec type
+// allow calculation with objects to be written in a readable way.
+// to add the actor's center, we add its position (top-left corner) and half its size.
+// That is the center in level coordinates, but we need it in pixel coordinates, so
+// we then multiply the resulting vector by our display scale.
 
 DOMDisplay.prototype.scrollPlayerIntoView = function(state) {
     let width = this.dom.clientWidth;
@@ -280,6 +322,11 @@ DOMDisplay.prototype.scrollPlayerIntoView = function(state) {
 
     // console.log(center.x);
 
+    // checks and verifies that the player position isn't outside of the allowed range
+    // this could set scroll coordinates that are below zero or 
+    // beyond the element’s scrollable area. Setting scrolLeft to negative numbers will 
+    // cause it to become 0
+
     if (center.x < left + margin) {
         this.dom.scrollLeft = center.x - margin;
     } else if (center.x > right - margin) {
@@ -295,12 +342,26 @@ DOMDisplay.prototype.scrollPlayerIntoView = function(state) {
 
 /// ------------------ Movement ------------------ ///
 
+// we will create conditions to be able to deal with the interactions between the elements.
+// The game must notice when a given motion causes an object to hit another object and respond accordingly.
+
+// here we are checking and giving conditions to make sure the player stays inside the game field 
+// and doesn't fall outside of the frame.
+// the touches method tells us whether a rectangle (specified by a position and a size)
+// touches a grid element of the given type.
+// it calculates the set of grid squares that the body overlaps with.( by using Math.ceil/floor)
+// By rounding the sides of a box up and down, we get the range of background squares that the box touches.
+
 Level.prototype.touches = function(pos, size, type) {
     var xStart = Math.floor(pos.x); // floor rounds down
     var xEnd = Math.ceil(pos.x + size.x); // ceil rounds up
     var yStart = Math.floor(pos.y);
     var yEnd = Math.ceil(pos.y + size.y);
 
+    // we loop over the grid by rounding the coordinates and return true when the matching square is found
+    // squares outside of the level are also treated as "wall" even they are actually "empty" to make sure
+    // that the player can't leave the level world and won’t accidentally try to read outside of the bounds 
+    // of our rows array.
     for (var y = yStart; y < yEnd; y++) {
         for (var x = xStart; x < xEnd; x++) {
 
@@ -315,21 +376,32 @@ Level.prototype.touches = function(pos, size, type) {
     return false
 }
 
+// update method actualizes the data of the given object.
+// The actors also get the time step, the keys, and the state, so that they can base their update on those. 
+
 State.prototype.update = function(time, keys) {
+
+    // The first thing it does is call the update method on all actors, producing an array of updated actors.
+    // only the player will actually read keys, since that’s the only actor that’s controlled
+    // by the keyboard.
     let actors = this.actors.map(actor => actor.update(time, this, keys));
     console.log(actors);
     
     let newState = new State(this.level, actors, this.status);
 
+    // If the game is already over, no further processing has to be done, so it returns newState only as long the status is "playing"
     if (newState.status != "playing") {
         return newState;
     }
+    // we create a new player with the actualized newState of the player
     let player = newState.player;
 
+    // the method tests whether the player is touching background lava. if so the game is lost
     if (this.level.touches(player.pos, player.size, "lava")) {
         return new State(this.level, actors, "lost");
     }
-
+    // if the game really is still going on, it sees whether any
+    // other actors overlap the player. this is detected with the overlap function below
     for (let actor of actors) {
         if (actor != player && overlap(actor, player)) {
             newState = actor.collide(newState);
@@ -338,7 +410,9 @@ State.prototype.update = function(time, keys) {
     return newState;
 }
 
-
+// Overlap between actors is detected with the overlap function. It takes two
+// actor objects and returns true when they touch, which is the case when they
+// overlap both along the x-axis and along the y-axis.
 function overlap(actor1, actor2) {
     return actor1.pos.x + actor1.size.x > actor2.pos.x &&
         actor1.pos.x < actor2.pos.x + actor2.size.x &&
@@ -346,20 +420,31 @@ function overlap(actor1, actor2) {
         actor1.pos.y < actor2.pos.y + actor2.size.y;
 }
 
+// if the actors overlap the collide method updates the state.
+// touching lava will change the status to "lost"
 Lava.prototype.collide = function(state) {
     return new State(state.level, state.actors, "lost");
 }
-
+// if touching the coins they will vanish 
 Coin.prototype.collide = function(state) {
     let filtered = state.actors.filter(a => a != this);
     let status = state.status;
-
+ // if touching the last coins the status is changed to "won"
     if (!filtered.some(a => a.type == "coin")) {
         status = "won";
     }
     return new State(state.level, filtered, status);
 }
 
+/// ---------------- Actor updates ------------- ///
+
+// the objects’ update methods for the actors, take as arguments the time step, the state object,
+// and a keys object. The one for the Lava actor type ignores the keys object.
+// This update method calculates a new position by adding the product of the
+// time step and the current speed to its old position
+
+// If no obstacle blocks that new position, it moves there. If there is an obstacle the behavior depends on the type
+// Bouncing lava inverts its speed by multiplying it by -1 so that it starts moving in the opposite direction.
 Lava.prototype.update = function(time, state) {
     let newPos = this.pos.plus(this.speed.times(time));
 
@@ -372,6 +457,9 @@ Lava.prototype.update = function(time, state) {
     }
 }
 
+// The wobble property is incremented to track time and then used as an argument to Math.sin 
+//to find the new position on the wave. The coin’s current
+// position is then calculated from its base position and an offset based on this wave.
 const wobbleSpeed = 8,
     wobbleDist = 0.07;
 
@@ -386,6 +474,14 @@ const playerXSpeed = 7;
 const gravity = 30;
 const jumpSpeed = 17;
 
+// Player motion is handled separately per axis
+// because hitting the floor should not prevent horizontal motion, and hitting a
+// wall should not stop falling or jumping motion.
+// The horizontal motion is computed based on the state of the left and right arrow keys.
+// When there’s no wall blocking the new position created by this
+// motion, it is used. Otherwise, the old position is kept.
+// Vertical motion works similar but has to simulate jumping and gravity.
+// The player’s vertical speed ( ySpeed ) is first anticipated to account for gravity
 Player.prototype.update = function (time, state, keys) {
     let xSpeed = 0;
 
@@ -414,6 +510,7 @@ Player.prototype.update = function (time, state, keys) {
     return new Player(pos, new Vec(xSpeed, ySpeed));
 }
 
+/// ------------------ Tracking Keys ----------------- ///
 
 function trackKeys(keys) {
     let down = Object.create(null);
