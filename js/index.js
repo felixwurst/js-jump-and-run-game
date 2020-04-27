@@ -1,23 +1,38 @@
 
 window.onload = () => {
-    // let simpleLevel = new Level(simpleLevelPlan);
-    // let display = new DOMDisplay(document.body, simpleLevel);
-    // display.syncState(State.start(simpleLevel));
+
     runGame(GAME_LEVELS, DOMDisplay);
+
+    // sounds
+    let coinSound = document.querySelector('#coinSound');
+    let lavaSound = document.querySelector('#lavaSound');
+    let levelCompleteSound = document.querySelector('#levelCompleteSound');
+    let gameOverSound = document.querySelector('#gameOverSound');
+    // scores
+    let levelSpan = document.querySelector('#levelSpan');
+    let livesSpan = document.querySelector('#livesSpan');
+    let coinsSpan = document.querySelector('#coinsSpan');
+    let scoreSpan = document.querySelector('#scoreSpan');
+    // messages -> Won / Game Over 
+    let messageSpan = document.querySelector('#messageSpan');
+
+
 }
 
-/// ----------- Main Level Plan ----------- ///
+
+
+/// ----------- Simple Level Plan ----------- ///
 
 var simpleLevelPlan = `
-......................
-..#................#..
-..#..............=.#..
-..#.........o.o....#..
-..#.@......#####...#..
-..#####............#..
-......#++++++++++++#..
-......##############..
-......................`;
+..............................
+......#................#......
+......#..............=.#......
+......#.........o.o....#......
+......#.@......#####...#......
+......#####............#......
+..........#++++++++++++#......
+..........##############......
+..............................`;
 
 /// ------------ Create Level Reader ----------- ///
 
@@ -28,14 +43,10 @@ var simpleLevelPlan = `
 
 class Level {
     constructor(plan) {
-        let rows = plan.trim().split("\n").map(item => item.split("")) 
-        //let rows = plan.trim().split("\n").map(l => [...l]);
-        // console.log(rows);
-        
+        let rows = plan.trim().split("\n").map(item => item.split(""))         
         this.height = rows.length;
         this.width = rows[0].length;
-        // stored in an array of objects
-        this.startActors = [];
+        this.startActors = []; // stored in an array of objects
         
         // each 'rows' holds an array of arrays with characters, the rows of the level plan.
         // map passes the array index as a second argument to the mapping function,
@@ -150,7 +161,6 @@ Lava.prototype.size = new Vec(1, 1);
 // the width/range the wave of a circle produces, is 2 π
 // range of a Circle = 2π * r, random gives a number between 0 and 1, also a position on the circular orbit.
 // beginning = 0, end = 1, 0 and 1 are same position
-// ? Anfang = 0, Ende = 1, 0 und 1 gleiche Position 
 
 class Coin {
     constructor(pos, basePos, wobble) {
@@ -169,7 +179,7 @@ class Coin {
 Coin.prototype.size = new Vec(0.6, 0.6);
 
 // define the levelChars object that maps the plan characters to either background grid types or actor classes.
-// ? has to be after creating the classes
+// has to be written after creating the classes
 
 const levelChars = {
     ".": "empty",
@@ -189,7 +199,7 @@ const levelChars = {
 // and child nodes. It is going to be reused in the following functions afterwards every time new
 // elements and attributes are needed.
 // it also adds the children elements to their to the parent
-// ? name => which html-element(e.g. Div, table...), attrs => classes or style-attributes for this element,
+// name => which html-element(e.g. Div, table...), attrs => classes or style-attributes for this element,
 // ...children => div(game) => table(background) => tr(row) => td(block)
 
 function elt(name, attrs, ...children) {
@@ -277,15 +287,15 @@ function drawActors(actors) {
 
 /// --------- Show Current Position of Actor and Redraw in New Position ------- ///
 
-// the syncState method is used to make the display show a given state
+// we built different methods for the different classes. and add it to them with .prototype
+// the created syncState method is used to make the display show a given state
 // The actorLayer property will be used to track the element that holds the actors so that they
 // can be easily removed and replaced
-// this deletes the moving actor and redraws it with its new position 
+// this deletes the moving actor and redraws it with its new position again and
 // and adds it to the main div(superDiv in this.dom) and gives it now the class: 'game playing'
 // Since there will be only a few actors in the game, redrawing all of them is not so wasteful on the data-space
-// ? remove and draw the actors again and again
-// ? syncState is a property of DOMDisplay.prototype, because it doesn't change, 
-// ? it is a function inside this property, it is used inside the async function runGame
+//* syncState is a property of DOMDisplay added to it with .prototype. it doesn't change and 
+//* it is a function inside this property, it is used inside the async function runGame
 DOMDisplay.prototype.syncState = function(state) {
     if (this.actorLayer) {
         this.actorLayer.remove();
@@ -306,6 +316,9 @@ DOMDisplay.prototype.syncState = function(state) {
 // to add the actor's center, we add its position (top-left corner) and half its size.
 // That is the center in level coordinates, but we need it in pixel coordinates, so
 // we then multiply the resulting vector by our display scale.
+//* this way we create a method "scrollPlayerIntoView" which is added to DOMDisplay with .prototype. as a property.
+//* it is a function inside this property.
+//* it is used in the syncState function
 
 DOMDisplay.prototype.scrollPlayerIntoView = function(state) {
     let width = this.dom.clientWidth;
@@ -350,8 +363,8 @@ DOMDisplay.prototype.scrollPlayerIntoView = function(state) {
 
 // here we are checking and giving conditions to make sure the player stays inside the game field 
 // and doesn't fall outside of the frame.
-// the touches method tells us whether a rectangle (specified by a position and a size)
-// touches a grid element of the given type.
+// the created touches method for the level object (added to it with .prototype) 
+// tells us whether a rectangle (specified by a position and a size) touches a grid element of the given type.
 // it calculates the set of grid squares that the body overlaps with.( by using Math.ceil/floor)
 // By rounding the sides of a box up and down, we get the range of background squares that the box touches.
 
@@ -379,7 +392,8 @@ Level.prototype.touches = function(pos, size, type) {
     return false
 }
 
-// update method actualizes the data of the given object.
+//* each actor has his individually created update method which is then added to the different objects with .prototype
+// update method actualizes the data of the given object. //* see in comment list
 // The actors also get the time step, the keys, and the state, so that they can base their update on those. 
 
 State.prototype.update = function(time, keys) {
@@ -387,8 +401,14 @@ State.prototype.update = function(time, keys) {
     // The first thing it does is call the update method on all actors, producing an array of updated actors.
     // only the player will actually read keys, since that’s the only actor that’s controlled
     // by the keyboard.
+    
     let actors = this.actors.map(actor => actor.update(time, this, keys));
-    // console.log(actors);
+
+    // counts the coints inside the level and write this number inside the coinsSpan
+    // console.log(actors);    
+    let coinFiltered = actors.filter(actor => actor.type == "coin")
+    // console.log(coinFiltered);
+    coinsSpan.innerText = coinFiltered.length;
     
     let newState = new State(this.level, actors, this.status);
 
@@ -401,6 +421,8 @@ State.prototype.update = function(time, keys) {
 
     // the method tests whether the player is touching background lava. if so the game is lost
     if (this.level.touches(player.pos, player.size, "lava")) {
+        console.log("lava");
+        lavaSound.play();
         return new State(this.level, actors, "lost");
     }
     // if the game really is still going on, it sees whether any
@@ -426,22 +448,35 @@ function overlap(actor1, actor2) {
 // if the actors overlap the collide method updates the state.
 // touching lava will change the status to "lost"
 Lava.prototype.collide = function(state) {
+    console.log("lava");
+    lavaSound.play();
     return new State(state.level, state.actors, "lost");
 }
+
+
+let scoreCounter = 0;
 // if touching the coins they will vanish 
 Coin.prototype.collide = function(state) {
     // console.log(this);
-    
+    console.log("coin");
+    coinSound.play();
+
     let filtered = state.actors.filter(a => a != this);
     // console.log(state.actors);
     // console.log(filtered);
+    // console.log(filtered.length);
+    scoreSpan.innerText = scoreCounter += 100;
+
+    
     
     let status = state.status;
- // if touching the last coins the status is changed to "won"
-    // ? wenn durch .some kein Akteur mehr mit type "coin" gefunden wird, ist das Spiel gewonnen
-    // ! dreht true zu false
+    // if touching the last coins the status is changed to "won"
+    // if there is no actor "coin" found with .some then the game is won
+    // the ! switches true to false .. so it shows me true when there are no more coins in the filtered array
     if (!filtered.some(a => a.type == "coin")) {
         status = "won";
+        console.log("halo");
+        levelCompleteSound.play();
     }
     return new State(state.level, filtered, status);
 }
@@ -471,7 +506,7 @@ Lava.prototype.update = function(time, state) {
 }
 
 // The wobble property is incremented to track time and then used as an argument to Math.sin 
-//to find the new position on the wave. The coin’s current
+// to find the new position on the wave. The coin’s current
 // position is then calculated from its base position and an offset based on this wave.
 const wobbleSpeed = 8,
     wobbleDist = 0.07;
@@ -520,8 +555,11 @@ Player.prototype.update = function (time, state, keys) {
 
     if (!state.level.touches(movedY, this.size, "wall")) {
         pos = movedY;
-    } else if (keys.ArrowUp && ySpeed > 0) {
-        ySpeed = -jumpSpeed;
+        // console.log("jump");
+    } else if (keys.ArrowUp && ySpeed > 0) {  //* to see and be able to jump again if the "head" hits the wall(ceiling) or touches the floor (also wall)
+    ySpeed = -jumpSpeed;
+        console.log("jump");
+        // coinSound.play();
     } else {
         ySpeed = 0;
     }
@@ -537,8 +575,10 @@ function trackKeys(keys) {
         // console.log(event);
         if (keys.includes(event.key)) {
             down[event.key] = event.type == "keydown";
-            // console.log(down);
             event.preventDefault();
+            // if (event.key == "ArrowUp") {
+            //     console.log("jump");
+            // }
         }
     }
     window.addEventListener("keydown", track);
@@ -590,13 +630,27 @@ function runLevel(level, Display){
 }
 
 async function runGame(plans, Display){
-    for(let level = 0; level < plans.length;){
+    let lives = 3;
+    for(let level = 0; level < plans.length && lives > 0;){
+        // console.log(`Level ${level + 1}, lives: ${lives}`);
+        levelSpan.innerText = level + 1;
+        livesSpan.innerText = lives;
         let status = await runLevel(new Level(plans[level]), Display);
-
         if(status == "won"){
             level++;
-            console.log("won");  
+        } else {
+            lives--;
         }
     }
-    console.log("You've Won!!!");
+    if (lives > 0) {
+        console.log("You've won!");
+        coinSound.play();
+        messageSpan.innerText = "You've won!";
+    } else {
+        console.log("Game over");
+        gameOverSound.play();
+        messageSpan.innerText = "Game Over";
+        livesSpan.innerText = lives;
+    }
 }
+

@@ -5,20 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jump & Run</title>
     <script src="./js/index.js"></script>
-    <script src="./js/levels03.js"></script>
+    <script src="./js/fbw5_level.js"></script>
+    <!-- <script src="./js/levels03.js"></script> -->
     <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
-    
-    <!-- <script>
-        let simpleLevel = new Level(simpleLevelPlan);
-        let display = new DOMDisplay(document.body, simpleLevel);
-        display.syncState(State.start(simpleLevel));
-    </script> -->
+    <!-- gameSounds -->
+    <audio id="coinSound" src="./audio/coinSound03.mp3"></audio>
+    <audio id="lavaSound" src="./audio/lava01.mp3"></audio>
+    <audio id="levelCompleteSound" src="./audio/levelComplete01.mp3"></audio>
+    <audio id="gameOverSound" src="./audio/gameOver01.mp3"></audio>
+    <!-- scoresDisplay -->
+    <div id="stateContainer">
+        <div>Level: <span id="levelSpan"></span></div>
+        <div>Lives: <span id="livesSpan"></span></div>
+        <div>Coins: <span id="coinsSpan"></span></div>
+        <div>Score: <span id="scoreSpan">0</span></div>
+    </div>
+    <div id="messageContainer">
+        <h1 id="messageSpan"></h1>
+    </div>
 
-    <!-- <script>
-        runGame(GAME_LEVELS, DOMDisplay);
-    </script> -->
 
 </body>
 </html>
