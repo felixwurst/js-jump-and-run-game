@@ -18,7 +18,7 @@ State.prototype.update = function(time, keys) {
 we are creating an update method for the class state and adding it to it with .prototype. 
 
 this.actors.map is an array of objects. 
-we map it and check for the single actor ( coin, lava, player..).. 
+we map it and check for the single actor (coin, lava, player..).. 
 the .update is then added to the actor.
 actor.update(time, this, keys)  is the INDIVIDUAL update method of those classes of the actors, which have been created and added to them before ( with .prototype) it is passed with parameters for them which are not necessarily used by all classes in their methods.  actor.update(TIME, THIS, KEYS)
  the parameters : (TIME, THIS, KEYS)

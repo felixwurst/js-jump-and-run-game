@@ -1,23 +1,30 @@
 
 window.onload = () => {
 
-    runGame(GAME_LEVELS, DOMDisplay);
-
     // sounds
     let coinSound = document.querySelector('#coinSound');
     let lavaSound = document.querySelector('#lavaSound');
     let levelCompleteSound = document.querySelector('#levelCompleteSound');
     let gameOverSound = document.querySelector('#gameOverSound');
+    // playerNameInput and playButton
+    let playerNameInput = document.querySelector('#playerNameInput');
+    let playButton = document.querySelector('#playButton');
     // scores
     let levelSpan = document.querySelector('#levelSpan');
     let livesSpan = document.querySelector('#livesSpan');
     let coinsSpan = document.querySelector('#coinsSpan');
     let scoreSpan = document.querySelector('#scoreSpan');
     // messages -> Won / Game Over 
-    let messageSpan = document.querySelector('#messageSpan');
+    let message = document.querySelector('#message');
+
+    playButton.addEventListener('click', function() {
+        runGame(GAME_LEVELS, DOMDisplay);
+    })
 
 
 }
+
+
 
 
 
@@ -421,7 +428,7 @@ State.prototype.update = function(time, keys) {
 
     // the method tests whether the player is touching background lava. if so the game is lost
     if (this.level.touches(player.pos, player.size, "lava")) {
-        console.log("lava");
+        // console.log("lava");
         lavaSound.play();
         return new State(this.level, actors, "lost");
     }
@@ -448,7 +455,7 @@ function overlap(actor1, actor2) {
 // if the actors overlap the collide method updates the state.
 // touching lava will change the status to "lost"
 Lava.prototype.collide = function(state) {
-    console.log("lava");
+    // console.log("lava");
     lavaSound.play();
     return new State(state.level, state.actors, "lost");
 }
@@ -457,25 +464,23 @@ Lava.prototype.collide = function(state) {
 let scoreCounter = 0;
 // if touching the coins they will vanish 
 Coin.prototype.collide = function(state) {
-    // console.log(this);
-    console.log("coin");
+    // console.log("coin");
+    // restarts the sound, it's needed if you collect more than one coin in a short time and the sound didn't finished yet
+    coinSound.currentTime = 0;
     coinSound.play();
 
     let filtered = state.actors.filter(a => a != this);
     // console.log(state.actors);
     // console.log(filtered);
-    // console.log(filtered.length);
     scoreSpan.innerText = scoreCounter += 100;
 
-    
-    
     let status = state.status;
     // if touching the last coins the status is changed to "won"
     // if there is no actor "coin" found with .some then the game is won
     // the ! switches true to false .. so it shows me true when there are no more coins in the filtered array
     if (!filtered.some(a => a.type == "coin")) {
         status = "won";
-        console.log("halo");
+        // console.log("halo");
         levelCompleteSound.play();
     }
     return new State(state.level, filtered, status);
@@ -549,16 +554,14 @@ Player.prototype.update = function (time, state, keys) {
         pos = movedX;
     }
     let ySpeed = this.speed.y + time * gravity;
-    // console.log(ySpeed);
     let newYVec = new Vec(0, ySpeed * time);
     let movedY = pos.plus(newYVec);
 
     if (!state.level.touches(movedY, this.size, "wall")) {
         pos = movedY;
-        // console.log("jump");
     } else if (keys.ArrowUp && ySpeed > 0) {  //* to see and be able to jump again if the "head" hits the wall(ceiling) or touches the floor (also wall)
     ySpeed = -jumpSpeed;
-        console.log("jump");
+        // console.log("jump");
         // coinSound.play();
     } else {
         ySpeed = 0;
@@ -643,13 +646,13 @@ async function runGame(plans, Display){
         }
     }
     if (lives > 0) {
-        console.log("You've won!");
+        // console.log("You've won!");
         coinSound.play();
-        messageSpan.innerText = "You've won!";
+        message.innerText = "You've won!";
     } else {
-        console.log("Game over");
+        // console.log("Game over");
         gameOverSound.play();
-        messageSpan.innerText = "Game Over";
+        message.innerText = "Game Over";
         livesSpan.innerText = lives;
     }
 }

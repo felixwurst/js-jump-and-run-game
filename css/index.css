@@ -66,18 +66,20 @@
     position: relative;
 }
 
-/* #stateContainer{
-    float: left;
-    border: solid 1px black;
-} */
-
-#stateContainer {
-    margin: 20px;
+#scoreContainer {
+    /* border: solid 1px black; */
+    display: flex;
+    margin: 40px 0px;
+    justify-content: space-around;
+    font-size: 30px;
+    /* flex-wrap: wrap; */
 
 }
 #messageContainer {
-    /* margin: auto;
-    border: solid 1px black; */
+    display: flex;
+    justify-content: center;
+    /* margin: auto; */
+    /* border: solid 1px black; */
     font-size: 50px;
     margin: 20px;
 }

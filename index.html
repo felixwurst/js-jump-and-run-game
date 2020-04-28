@@ -10,20 +10,25 @@
     <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
+
     <!-- gameSounds -->
     <audio id="coinSound" src="./audio/coinSound03.mp3"></audio>
     <audio id="lavaSound" src="./audio/lava01.mp3"></audio>
     <audio id="levelCompleteSound" src="./audio/levelComplete01.mp3"></audio>
     <audio id="gameOverSound" src="./audio/gameOver01.mp3"></audio>
+    <!-- Player Name Input -->
+    <input id="playerNameInput" type="text" placeholder="PlayerName">
+    <button id="playButton">Play!</button>
     <!-- scoresDisplay -->
-    <div id="stateContainer">
+    <div id="scoreContainer">
         <div>Level: <span id="levelSpan"></span></div>
         <div>Lives: <span id="livesSpan"></span></div>
         <div>Coins: <span id="coinsSpan"></span></div>
         <div>Score: <span id="scoreSpan">0</span></div>
     </div>
+    <!-- messages: "You've won" or "Game Over" -->
     <div id="messageContainer">
-        <h1 id="messageSpan"></h1>
+        <h1 id="message"></h1>
     </div>
 
 
