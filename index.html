@@ -16,20 +16,27 @@
     <audio id="lavaSound" src="./audio/lava01.mp3"></audio>
     <audio id="levelCompleteSound" src="./audio/levelComplete01.mp3"></audio>
     <audio id="gameOverSound" src="./audio/gameOver01.mp3"></audio>
+
     <!-- Player Name Input -->
     <input id="playerNameInput" type="text" placeholder="PlayerName">
+    <!-- <input id="hiScoreInput" type="text" placeholder="HighScore"> -->
     <button id="playButton">Play!</button>
+
     <!-- scoresDisplay -->
     <div id="scoreContainer">
-        <div>Level: <span id="levelSpan"></span></div>
-        <div>Lives: <span id="livesSpan"></span></div>
-        <div>Coins: <span id="coinsSpan"></span></div>
+        <div>Level: <span id="levelSpan">0</span></div>
+        <div>Lives: <span id="livesSpan">0</span></div>
+        <div>Coins: <span id="coinsSpan">0</span></div>
         <div>Score: <span id="scoreSpan">0</span></div>
     </div>
     <!-- messages: "You've won" or "Game Over" -->
     <div id="messageContainer">
         <h1 id="message"></h1>
     </div>
+    <!-- hiScoreList -->
+    <ul id="highScoreList">
+        <!-- <li>Felix: 1000</li> -->
+    </ul>
 
 
 </body>
