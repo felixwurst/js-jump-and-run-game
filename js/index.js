@@ -6,24 +6,32 @@ window.onload = () => {
     let lavaSound = document.querySelector('#lavaSound');
     let levelCompleteSound = document.querySelector('#levelCompleteSound');
     let gameOverSound = document.querySelector('#gameOverSound');
+
     // playerNameInput and playButton
     let playerNameInput = document.querySelector('#playerNameInput');
+
     // let hiScoreInput = document.querySelector('#hiScoreInput');
     let playButton = document.querySelector('#playButton');
     let highScoreList = document.querySelector('#highScoreList');
+
     // scores
     let levelSpan = document.querySelector('#levelSpan');
     let livesSpan = document.querySelector('#livesSpan');
     let coinsSpan = document.querySelector('#coinsSpan');
     let scoreSpan = document.querySelector('#scoreSpan');
+    
     // messages -> Won / Game Over 
     let message = document.querySelector('#message');
 
     // activating the game with playButton
     playButton.addEventListener('click', function(){
-        highScoreList.innerHTML = '';
-        message.innerText = "";
         if (switcher == true) {
+            scoreSpan.innerText = "00000";
+            scoreCounter = 0; // resets the scoreCounter for the next player
+            highScoreList.innerHTML = "";
+            message.innerText = "";
+            playButton.classList.remove('pause');
+            playButton.classList.add('play');
             runGame(GAME_LEVELS, DOMDisplay);
         }
     });
@@ -32,7 +40,11 @@ window.onload = () => {
 
 /// ----------- Simple Level Plan ----------- ///
 
-var simpleLevelPlan = `
+// creating levels with keyboard chars in an individual level.js file which 
+// is connected to our HTML 
+// this is an example how one could look like for better understanding of the 
+// following code 
+`
 ..............................
 ......#................#......
 ......#..............=.#......
@@ -42,6 +54,7 @@ var simpleLevelPlan = `
 ..........#++++++++++++#......
 ..........##############......
 ..............................`;
+
 
 /// ------------ Create Level Reader ----------- ///
 
@@ -120,6 +133,7 @@ class Vec {
 
 /// ------------- Actors in the Game ------------ ///
 
+// the size of non of the Actors will change.
 // static create method is used by the Level constructor
 // to create an actor from a character in the level plan.
 
@@ -169,7 +183,7 @@ Lava.prototype.size = new Vec(1, 1);
 
 // coins would move up and down synchronously, the starting phase of each coin is randomized to avoid that.
 // multiply the value returned by Math.random by 2 π to give the coin a random starting position on the wave
-// the width/range the wave of a circle produces, is 2 π
+// the width/range of the wave a circle produces, is 2 π
 // range of a Circle = 2π * r, random gives a number between 0 and 1, also a position on the circular orbit.
 // beginning = 0, end = 1, 0 and 1 are same position
 
@@ -191,7 +205,7 @@ Coin.prototype.size = new Vec(0.6, 0.6);
 
 
 // define the levelChars object that maps the plan characters to either background grid types or actor classes.
-// has to be written after creating the classes
+// has to be declared after creating the classes
 
 const levelChars = {
     ".": "empty",
@@ -255,7 +269,6 @@ class DOMDisplay {
 
 /// ------------ Scaling Of Coordinates ----------- ///
 
-// pixel scale
 // scale constant gives the number of pixels that a single unit takes up on the screen.
 // each char/actor has its position on the grid. It is the frame on which the vector object
 // aligns the position for the moveable actors when it comes to use
@@ -264,6 +277,7 @@ class DOMDisplay {
 // it is a dynamic way to create the elements, classes and attributes of the background-grid, which is divided like table-rows with table data. 
 // by separation the code is more accessible and readable. because you can use the function for different classes if needed. 
 
+// pixel scale
 const scale = 20;
 
 function drawGrid(level) {
@@ -297,14 +311,15 @@ function drawActors(actors) {
 /// --------- Show Current Position of Actor and Redraw in New Position ------- ///
 
 // we built different methods for the different classes. and add it to them with .prototype
+// we are initializing an Object
 // the created syncState method is used to make the display show a given state
 // The actorLayer property will be used to track the element that holds the actors so that they
 // can be easily removed and replaced
 // this deletes the moving actor and redraws it with its new position again and
 // and adds it to the main div(superDiv in this.dom) and gives it now the class: 'game playing'
 // Since there will be only a few actors in the game, redrawing all of them is not so wasteful on the data-space
-//* syncState is a property of DOMDisplay added to it with .prototype. it doesn't change and 
-//* it is a function inside this property, it is used inside the async function runGame
+// syncState is a property of DOMDisplay added to it with .prototype. it doesn't change and 
+// it is a function inside this property, it is used inside the async function runGame
 
 DOMDisplay.prototype.syncState = function(state) {
     if (this.actorLayer) {
@@ -327,9 +342,9 @@ DOMDisplay.prototype.syncState = function(state) {
 // to add the actor's center, we add its position (top-left corner) and half its size.
 // That is the center in level coordinates, but we need it in pixel coordinates, so
 // we then multiply the resulting vector by our display scale.
-//* this way we create a method "scrollPlayerIntoView" which is added to DOMDisplay with .prototype. as a property.
-//* it is a function inside this property.
-//* it is used in the syncState function
+// this way we create a method "scrollPlayerIntoView" which is added to DOMDisplay with .prototype. as a property.
+// it is a function inside this property.
+// it is used in the syncState function
 
 DOMDisplay.prototype.scrollPlayerIntoView = function(state) {
     let width = this.dom.clientWidth;
@@ -402,8 +417,8 @@ Level.prototype.touches = function(pos, size, type) {
 }
 
 
-//* each actor has his individually created update method which is then added to the different objects with .prototype
-// update method actualizes the data of the given object. //* see in comment list
+//* each actor has his individually created update method which is then initialized to the different objects with .prototype
+// update method actualizes the data of the given object. //* see in the attached comment list
 // The actors also get the time step, the keys, and the state, so that they can base their update on those. 
 
 State.prototype.update = function(time, keys) {
@@ -412,11 +427,11 @@ State.prototype.update = function(time, keys) {
     // only the player will actually read keys, since that’s the only actor that’s controlled
     // by the keyboard.
     
-    let actors = this.actors.map(actor => actor.update(time, this, keys));
+    let actors = this.actors.map(actor => actor.update(time, this, keys));   //* see in the attached comment list
 
-    // counts the coints inside the level and write this number inside the coinsSpan
-    let coinFiltered = actors.filter(actor => actor.type == "coin")
-    coinsSpan.innerText = coinFiltered.length;
+    // counts the coins inside the level and write this number inside the coinsSpan
+    let coinFiltered = actors.filter(actor => actor.type == "coin");  
+    coinsSpan.innerText = scoreFormater(coinFiltered.length);
     
     let newState = new State(this.level, actors, this.status);
 
@@ -470,7 +485,7 @@ Coin.prototype.collide = function(state) {
     coinSound.play();
 
     let filtered = state.actors.filter(a => a != this);
-    scoreSpan.innerText = scoreCounter += 100;
+    scoreSpan.innerText = scoreFormater(scoreCounter += 100); // using scoreFormater to scale the digits 
 
     let status = state.status;
     // if touching the last coins the status is changed to "won"
@@ -500,11 +515,11 @@ Lava.prototype.update = function(time, state) {
     let speedVec = this.speed.times(time); 
     let newPos = posVec.plus(speedVec);
 
-    if (!state.level.touches(newPos, this.size, "wall")) { // ? if lava doesn't touch wall
+    if (!state.level.touches(newPos, this.size, "wall")) { //? if lava doesn't touch wall
         return new Lava(newPos, this.speed, this.reset);
-    } else if (this.reset) { // ? if lava touches the wall and has a reset-value
+    } else if (this.reset) { //? if lava touches the wall and has a reset-value
         return new Lava(this.reset, this.speed, this.reset);
-    } else { // ? if lava touches the wall and hasn't a reset-value
+    } else { //? if lava touches the wall and hasn't a reset-value
         return new Lava(this.pos, this.speed.times(-1));
     }
 }
@@ -527,7 +542,7 @@ Coin.prototype.update = function (time) {
 // Player motion is handled separately per axis
 // because hitting the floor should not prevent horizontal motion, and hitting a
 // wall should not stop falling or jumping motion.
-// The horizontal motion is computed based on the state of the left and right arrow keys.
+// The horizontal motion is calculated based on the state of the left and right arrow keys.
 // When there’s no wall blocking the new position created by this
 // motion, it is used. Otherwise, the old position is kept.
 // Vertical motion works similar but has to simulate jumping and gravity.
@@ -559,7 +574,7 @@ Player.prototype.update = function (time, state, keys) {
 
     if (!state.level.touches(movedY, this.size, "wall")) {
         pos = movedY;
-    } else if (keys.ArrowUp && ySpeed > 0) {  //* to see and be able to jump again if the "head" hits the wall(ceiling) or touches the floor (also wall)
+    } else if (keys.ArrowUp && ySpeed > 0) {  // to see and be able to jump again if the "head" hits the wall(ceiling) or touches the floor (also wall)
     ySpeed = -jumpSpeed;
     } else {
         ySpeed = 0;
@@ -570,15 +585,27 @@ Player.prototype.update = function (time, state, keys) {
 
 /// ------------------ Tracking Keys ----------------- ///
 
+// we want that the effect of the pressed key (moving the player figure) to stay active as long as they are held.
+// We set up a key handler that stores the current state of the left, right, and up arrow keys. 
+// we call preventDefault for those keys so that they don’t end up scrolling the page.
+
+// the function takes the given array of key names and will return an object that tracks the current position of those keys.
+// it registers event handlers for "keydown" and "keyup" events and, when the key code in the event is present in the 
+// set of codes that it is tracking, it updates the object.
+// the same function is used for both event types. It checks if the key state should 
+// be updated: to true = "keydown" or false = "keyup".
+
 function trackKeys(keys) {
     let down = Object.create(null);
-    
+   
     function track(event) {
         if (keys.includes(event.key)) {
             down[event.key] = event.type == "keydown";
             event.preventDefault();
+           
         }
     }
+
     window.addEventListener("keydown", track);
     window.addEventListener("keyup", track);
 
@@ -586,6 +613,22 @@ function trackKeys(keys) {
 }
 const arrowKeys = trackKeys(["ArrowLeft", "ArrowRight", "ArrowUp"])
 
+
+/// ------------------------ Show And Run The Game --------------------- ///
+
+// The script uses requestAnimationFrame to schedule the animate function to run whenever the browser is ready to repaint the screen. 
+// The animate function itself again calls requestAnimationFrame to schedule the next update. 
+// If we just updated the DOM in a loop, the page would freeze, and nothing would show up on the screen.
+// Browsers do not update their display while a JavaScript program is running, 
+// nor do they allow any interaction with the page. This is why we need requestAnimationFrame  
+// it lets the browser know that we are done for now, and it can go ahead and do other things 
+// such as updating the screen and responding to user actions.
+
+// using requestAnimationFrame requires us to track the time at which our function was called the last time around and 
+// call requestAnimationFrame again after every frame.
+// we create a function (runAnimation) that wraps the time tracking function(frame) which needs a time difference as an argument 
+// and draws a single frame.
+// When the frame function returns the value false, the animation stops.
 
 function runAnimation(frameFunc) {
     let lastTime = null;
@@ -603,9 +646,14 @@ function runAnimation(frameFunc) {
     requestAnimationFrame(frame);
 }
 
+
+// The runLevel function takes a Level object and a display constructor and returns a promise.
+// It displays the level (in document.body) and lets the user play through it.
+// runLevel waits one more second (to let the user see what happens) and then clears the display, 
+// tops the animation, and resolves the promise to the game’s end status.
+
 // switch for gameBlocker, prevents start of a new gameDisplay if playButton is 
 // clicked repeatedly while game is already running
-
 let switcher = true;
 
 function runLevel(level, Display){
@@ -619,7 +667,6 @@ function runLevel(level, Display){
             display.syncState(state);
 
             if(state.status == "playing"){
-                console.log(state.status);
                 switcher = false; // switcher to false -> no new game created when clicking playButton
                 return true;
             } else if (ending > 0){
@@ -628,15 +675,21 @@ function runLevel(level, Display){
             } else {
                 display.clear();
                 resolve(state.status);
-                console.log(state.status);
                 return false;
             }
         })
     })
 }
 
+
+// Whenever the player dies, the current level is restarted.
+// the runGame function takes an array of level plans, which are strings, 
+// and a display constructor.
+// because runLevel returns a promise we can write runGame with async.
+// It returns another promise, which resolves when the player finishes the game.
+
 async function runGame(plans, Display){
-    let lives = 1;
+    let lives = 1; // set the lives given to the player(user)
     for(let level = 0; level < plans.length && lives > 0;){
         levelSpan.innerText = level + 1;
         livesSpan.innerText = lives;
@@ -651,12 +704,16 @@ async function runGame(plans, Display){
         switcher = true; // switcher to true -> so game appears again after you've won and press playButton again
         coinSound.play();
         message.innerText = "You've Won!";
+        playButton.classList.remove('play');
+        playButton.classList.add('pause');
         createHiScoreList();
     } else {
         switcher = true; // switcher to true -> so game appears again after you lost and press playButton again
         gameOverSound.play();
         message.innerText = "Game Over";
         livesSpan.innerText = lives;
+        playButton.classList.remove('play');
+        playButton.classList.add('pause');
         createHiScoreList();
 
     }
@@ -664,6 +721,13 @@ async function runGame(plans, Display){
 
 
 /// ----------- HighScoreList ----------- ///
+
+// created a function to access the local storage and be able to display the High scores
+// of the different players. 
+// you have to enter a name in the playerName input to see your high score after the game is played
+// it stores the name and the score of the player in the local storage and shows it after the player 
+// has won or lost the game. 
+// when the player plays a new game or a new plays the high score is not lost. 
 
 let hiScoreArr = [];
 
@@ -686,9 +750,6 @@ function createHiScoreList() {
         hiScoreObj.name = playerName;
         hiScoreObj.score = scoreCounter;
         hiScoreArr.push(hiScoreObj);
-        scoreCounter = 0; // resets the scoreCounter for the next player
-        scoreSpan.innerText = scoreCounter;
-        // create highScoreList as DOM-elements
         hiScoreArr.forEach(player => {
             let listItem = document.createElement('li');
             listItem.innerText = player.name + ': ' + player.score + ' Points';
@@ -697,5 +758,26 @@ function createHiScoreList() {
         // save new array to localStorage
         localStorage.setItem('hiScore', JSON.stringify(hiScoreArr));
     }
+}
+
+
+/// ----------- Score Formatting ----------- ///
+
+// creating a function to set the digits of the score and the coins 
+// it takes the score and adds a digit to it depending on the given digit number, 
+// so it always has the same length in the score counter 
+
+function scoreFormater(score) {
+    let result = ''
+    if (score >= 1000 && score < 10000) { // for scores with 4 digits -> 1000 -> 01000
+        result = '0' + score.toString();
+    } else if (score >= 100 && score < 1000) { // for scores with 3 digits -> 100 -> 00100
+        result = '00' + score.toString();
+    } else if (score < 10) { // for coin-scores with 1 digit -> 7 -> 07
+        result = '0' + score.toString();
+    } else {
+        result = score.toString();
+    }
+    return result;
 }
 

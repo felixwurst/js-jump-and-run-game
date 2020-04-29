@@ -45,6 +45,7 @@ and this is the State itself.
 
 
 here: let filtered = state.actors.filter(a => a != this);
+
 we filter the actors out of the array from state.actors (filter also creates a new array) 
 it looks inside and sees which actors are there on that level, and how many. ( for example if there is more than one coin in the level, it is written : "coin" coin")
 we filter what is unequal this (  != this; so we filter everything besides the object coin,
@@ -54,6 +55,7 @@ look at : console log( filtered)
 
 
 in : (!filtered.some(a => a.type == "coin"))
+
 .some is looking if the filtered element passes the condition. 
 in this case the condition is to see if the type of the actor is a coin.
 through the exclamation mark (!) the given boolean value is reversed .. true is false and false is true 
