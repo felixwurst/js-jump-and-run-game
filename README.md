@@ -24,6 +24,8 @@ We want to create the levels by ourselves. We will use common keyboard chars for
 
 To do so the program must be able to read them, to differ between moving and static actors and separate them from each other in order to make them move or move the player token with the arrow keys.
 
+Our reference is the book : Eloquent JavaScript
+We tried to realize the project given in the book.
 
 Code Documentation : 
 

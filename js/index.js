@@ -69,7 +69,7 @@ class Level {
         this.height = rows.length;
         this.width = rows[0].length;
         this.startActors = []; // stored in an array of objects
-        
+                
         // each 'rows' holds an array of arrays with characters, the rows of the level plan.
         // map passes the array index as a second argument to the mapping function,
         // which tells us the x- and y-coordinates of a given character.
@@ -689,7 +689,7 @@ function runLevel(level, Display){
 // It returns another promise, which resolves when the player finishes the game.
 
 async function runGame(plans, Display){
-    let lives = 1; // set the lives given to the player(user)
+    let lives = 3; // set the lives given to the player(user)
     for(let level = 0; level < plans.length && lives > 0;){
         levelSpan.innerText = level + 1;
         livesSpan.innerText = lives;
