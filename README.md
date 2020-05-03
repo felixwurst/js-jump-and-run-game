@@ -49,54 +49,54 @@ The Code is commented more detailed and even has and extended Comment-sheet for 
 
 * [Class State](#Class-State)
 
-* [Class Vec](Class-Vec)
+* [Class Vec](#Class-Vec)
 
-* [Class PLayer](Class-Player)
+* [Class PLayer](#Class-Player)
 
-* [Class Coin](Class-Coin)
+* [Class Coin](#Class-Coin)
 
-* [Level Chars](Level-Chars)
+* [Level Chars](#Level-Chars)
 
-* [Function Elt](Function-Elt)
+* [Function Elt](#Function-Elt)
 
-* [Class DOMDisplay](Class-DOMDisplay)
+* [Class DOMDisplay](#Class-DOMDisplay)
 
-* [Function drawGrid](Function-drawGrid)
+* [Function drawGrid](#Function-drawGrid)
 
-* [Function drawActors](Function-drawActors)
+* [Function drawActors](#Function-drawActors)
 
-* [DOMDisplay.prototype.syncState](DOMDisplay.prototype.syncState)
+* [DOMDisplay.prototype.syncState](#DOMDisplay.prototype.syncState)
 
-* [DOMDisplay.prototype.scrollPlayerIntoView](DOMDisplay.prototype.scrollPlayerIntoView)
+* [DOMDisplay.prototype.scrollPlayerIntoView](#DOMDisplay.prototype.scrollPlayerIntoView)
 
-* [Level.prototype.touches](Level.prototype.touches)
+* [Level.prototype.touches](#Level.prototype.touches)
 
-* [Update method](Update-method)
+* [Update method](#Update-method)
 
-* [State.prototype.update](State.prototype.update)
+* [State.prototype.update](#State.prototype.update)
 
-* [Function Overlap](Function-Overlap)
+* [Function Overlap](#Function-Overlap)
 
-* [Lava.prototype.collide, Coin.prototype.collide](Lava.prototype.collide,Coin.prototype.collide)
+* [Lava.prototype.collide, Coin.prototype.collide](#Lava.prototype.collide,Coin.prototype.collide)
 
-* [Lava.prototype.update, Coin.prototype.update](Lava.prototype.update,Coin.prototype.update)
+* [Lava.prototype.update, Coin.prototype.update](#Lava.prototype.update,Coin.prototype.update)
 
-* [Player.prototype.update](Player.prototype.update)
+* [Player.prototype.update](#Player.prototype.update)
 
-* [Function trackKeys](Function-trackKeys)
+* [Function trackKeys](#Function-trackKeys)
 
-* [Function runAnimation](Function-runAnimation)
+* [Function runAnimation](#Function-runAnimation)
 
-* [Function runLevel](Function-runLevel)
+* [Function runLevel](#Function-runLevel)
 
-* [Async function runGame](Async-function-runGame)
+* [Async function runGame](#Async-function-runGame)
 
-* [Async function runGame](Async-function-runGame)
+* [Async function runGame](#Async-function-runGame)
 
-* [Function createHiScoreList](Function-createHiScoreList)
+* [Function createHiScoreList](#Function-createHiScoreList)
 
 
-* [Function scoreFormatter](Function-scoreFormatter)
+* [Function scoreFormatter](#Function-scoreFormatter)
 
 
 
