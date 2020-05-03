@@ -767,7 +767,7 @@ function createHiScoreList() {
 // it takes the score and adds a digit to it depending on the given digit number, 
 // so it always has the same length in the score counter 
 
-function scoreFormater(score) {
+function scoreFormatter(score) {
     let result = ''
     if (score >= 1000 && score < 10000) { // for scores with 4 digits -> 1000 -> 01000
         result = '0' + score.toString();
