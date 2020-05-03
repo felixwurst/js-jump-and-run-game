@@ -5,6 +5,20 @@
     font-family: 'Cabin', sans-serif;
 }
 
+/* --------------------- background --------------------- */
+
+.wallImg {
+    position: relative;
+    height: 100vh;
+    background-image: url("../img/museumWall01B.jpg");
+    background-color: white;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* --------------------- game --------------------- */
+
 .background {
     background: rgb(52, 166, 251);
     table-layout: fixed;
@@ -51,17 +65,24 @@
     overflow: hidden;
     max-width: 600px;
     max-height: 450px;
-    position: relative;
+    position: absolute;
     margin: auto;
-    top: 36px;
+    /* top: 36px; */
+    top: 133px;
+    left: 50%;
+    transform: translateX(-50%);
 }
+
+/* --------------------- score --------------------- */
 
 #scoreContainer {
     display: flex;
     justify-content: space-around;
-    margin: 30px;
+    padding: 30px;
     font-size: 30px;
 }
+
+/* --------------------- start & end display --------------------- */
 
 #messageContainer {
     position: absolute;
@@ -71,8 +92,8 @@
     transform: translateX(-50%);
     top: 123px;
     border: solid 10px black;
-    box-shadow: 10px 10px 30px 0 black;
-    background: rgb(52, 166, 251);
+    /* box-shadow: 10px 10px 30px 0 black; */
+    box-shadow: -7px 10px 10px rgba(100, 100, 100, 0.7);
     background: rgb(255, 100, 100);
     margin: auto;
 }
@@ -84,6 +105,8 @@
     margin: 9px 0px;
 }
 
+/* --------------------- High Score List --------------------- */
+
 #highScoreList {
     font-size: 30px;
     text-align: center;
@@ -91,6 +114,8 @@
     color: white;
     list-style-type: none;
 }
+
+/* --------------------- player input & play button --------------------- */
 
 #inputContainer{
     position: absolute;
@@ -100,6 +125,8 @@
 }
 
 #playerNameInput {
+    height: 30px;
+    font-size: 18px;
     border: solid 3px black;
 }
 
@@ -113,13 +140,13 @@
     border-radius: 50%;
     color: black;
     color: rgb(241, 229, 89);
-    box-shadow: 3px 3px 2px rgba(121, 121, 121, 0.7);
+    box-shadow: -2px 3px 10px rgba(100, 100, 100, 0.7);
     outline: none;
     cursor: pointer;
 }
 
 #playButton:active {
-    box-shadow: -1px -1px 2px rgba(121, 121, 121, 0.7) inset;
+    box-shadow: -2px 3px 10px rgba(100, 100, 100, 0.7) inset;
 }
 
 .play {

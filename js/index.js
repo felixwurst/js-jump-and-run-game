@@ -431,7 +431,7 @@ State.prototype.update = function(time, keys) {
 
     // counts the coins inside the level and write this number inside the coinsSpan
     let coinFiltered = actors.filter(actor => actor.type == "coin");  
-    coinsSpan.innerText = scoreFormater(coinFiltered.length);
+    coinsSpan.innerText = scoreFormatter(coinFiltered.length);
     
     let newState = new State(this.level, actors, this.status);
 
@@ -485,7 +485,7 @@ Coin.prototype.collide = function(state) {
     coinSound.play();
 
     let filtered = state.actors.filter(a => a != this);
-    scoreSpan.innerText = scoreFormater(scoreCounter += 100); // using scoreFormater to scale the digits 
+    scoreSpan.innerText = scoreFormatter(scoreCounter += 100); // using scoreFormatter to scale the digits 
 
     let status = state.status;
     // if touching the last coins the status is changed to "won"

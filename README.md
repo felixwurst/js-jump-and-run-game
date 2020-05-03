@@ -1,6 +1,6 @@
 # js-g4
 
-# Project : Build a Front-End application with Vanilla JavaScript
+# Project : Build a Front-End Application with Vanilla JavaScript
 
 **Creating a Jump & Run Game**
 
@@ -45,67 +45,64 @@ The Code is commented more detailed and even has and extended Comment-sheet for 
 
 #### Content Table
 
-* [Class Level](#Class-Level)
+* [1. Class Level](#Class-Level)
 
-* [Class State](#Class-State)
+* [2. Class State](#Class-State)
 
-* [Class Vec](#Class-Vec)
+* [3. Class Vec](#Class-Vec)
 
-* [Class PLayer](#Class-Player)
+* [4. Class Player](#Class-Player)
 
-* [Class Coin](#Class-Coin)
+* [5. Class Coin](#Class-Coin)
 
-* [Level Chars](#Level-Chars)
+* [6. Level Chars](#Level-Chars)
 
-* [Function Elt](#Function-Elt)
+* [7. Function Elt](#Function-Elt)
 
-* [Class DOMDisplay](#Class-DOMDisplay)
+* [8. Class DOMDisplay](#Class-DOMDisplay)
 
-* [Function drawGrid](#Function-drawGrid)
+* [9. Function drawGrid](#Function-drawGrid)
 
-* [Function drawActors](#Function-drawActors)
+* [10. Function drawActors](#Function-drawActors)
 
-* [DOMDisplay.prototype.syncState](#DOMDisplay.prototype.syncState)
+* [11. DOMDisplay.prototype.syncState](#DOMDisplay.prototype.syncState)
 
-* [DOMDisplay.prototype.scrollPlayerIntoView](#DOMDisplay.prototype.scrollPlayerIntoView)
+* [12. DOMDisplay.prototype.scrollPlayerIntoView](#DOMDisplay.prototype.scrollPlayerIntoView)
 
-* [Level.prototype.touches](#Level.prototype.touches)
+* [13. Level.prototype.touches](#Level.prototype.touches)
 
-* [Update method](#Update-method)
+* [14. Update method](#Update-method)
 
-* [State.prototype.update](#State.prototype.update)
+* [15. State.prototype.update](#State.prototype.update)
 
-* [Function Overlap](#Function-Overlap)
+* [16. Function Overlap](#Function-Overlap)
 
-* [Lava.prototype.collide, Coin.prototype.collide](#Lava.prototype.collide,Coin.prototype.collide)
+* [17. Lava.prototype.collide, Coin.prototype.collide](#Lava.prototype.collide,Coin.prototype.collide)
 
-* [Lava.prototype.update, Coin.prototype.update](#Lava.prototype.update,Coin.prototype.update)
+* [18. Lava.prototype.update, Coin.prototype.update](#Lava.prototype.update,Coin.prototype.update)
 
-* [Player.prototype.update](#Player.prototype.update)
+* [19. Player.prototype.update](#Player.prototype.update)
 
-* [Function trackKeys](#Function-trackKeys)
+* [20. Function trackKeys](#Function-trackKeys)
 
-* [Function runAnimation](#Function-runAnimation)
+* [21. Function runAnimation](#Function-runAnimation)
 
-* [Function runLevel](#Function-runLevel)
+* [22. Function runLevel](#Function-runLevel)
 
-* [Async function runGame](#Async-function-runGame)
+* [23. Async function runGame](#Async-function-runGame)
 
-* [Async function runGame](#Async-function-runGame)
+* [24. Function createHiScoreList](#Function-createHiScoreList)
 
-* [Function createHiScoreList](#Function-createHiScoreList)
-
-
-* [Function scoreFormatter](#Function-scoreFormatter)
+* [25. Function scoreFormatter](#Function-scoreFormatter)
 
 
 
 
-Creation of Simple Level Plan for better understanding of how the levels are created with the chars and how they can look like. it is up to us.
+Creation of Simple Level Plan for better understanding of how the levels are created with the chars and how they can look like. It is up to us.
 
 (.) periods are "empty" so they are the background-color 
 (#) characters are walls
-(=) at the top is a block of lava that moves back and forth horizontally.
+(=) at the top is a block of lava that moves back and forth horizontally
 (|) creates vertically moving lava
 (v) indicates dripping lava
 (@) is the starting position is the player
@@ -210,12 +207,12 @@ DrawGrid has to be read in combination with the class DOMDisplay. they belong to
 Same as for the DOMDisplay it could have been written inside the class.
 By separation the code is more accessible and readable. Because you can use the function for different classes if needed. 
 
-**10. We’ll be using a style sheet to set the actual colors**
+**We’ll be using a style sheet to set the actual colors**
 
 and other fixed properties of the elements that make up the game, to keep the code clean.
 It would also be possible to directly assign to the elements’ style property when we create them, but that would complicate and produce a lengthy code.
 
-#### 11. Function drawActors
+#### 10. Function drawActors
 
 Start drawing of the single actors with scaling and positioning
 creating DOM-elements
@@ -226,7 +223,7 @@ It is mapped to get every single "actor"-element which is then given an element 
 The size attributes are the size and position and scale which have been set before 
 
 
-#### 12. DOMDisplay.prototype.syncState
+#### 11. DOMDisplay.prototype.syncState
 
 Showing the current position of the Actor and redraw it in its new position
 We initialize an Object
@@ -239,7 +236,7 @@ Since there will be only a few actors in the game, redrawing all of them is not 
 syncState is a property of DOMDisplay added to it with .prototype. it doesn't change and 
 it is a function inside this property, it is used inside the async function runGame
 
-#### 13. DOMDisplay.prototype.scrollPlayerIntoView
+#### 12. DOMDisplay.prototype.scrollPlayerIntoView
 
 Detect positions of the actor to set the position of the game screen
 We want the view point of the player to be frankly centered. 
@@ -252,7 +249,7 @@ This way we create a method "scrollPlayerIntoView" which is added to DOMDisplay 
 It is a function inside this property.
 It is used in the syncState function
 
-#### 14. Level.prototype.touches
+#### 13. Level.prototype.touches
 
 Now we want to control and set the setting for the movements in the game 
 we will create conditions to be able to deal with the interactions between the elements.
@@ -263,14 +260,14 @@ It calculates the set of grid squares that the body overlaps with.( by using Mat
 By rounding the sides of a box up and down, we get the range of background squares that the box touches.
 We loop over the grid by rounding the coordinates and return true when the matching square is found. Squares outside of the level are also treated as "wall" even they are actually "empty" to make sure that the player can't leave the level world and won’t accidentally try to read outside of the bounds of our rows array.
 
-#### 15. Update method
+#### 14. Update method
 
 Each actor has his individually created update method which is then initialized to the different objects with .prototype. We do this because the actors act differently.
 Update method actualizes the data of the given object. 
 The actors also get the time step, the keys, and the state, so that they can base their update on those parameters. 
 
 
-#### 16. State.prototype.update
+#### 15. State.prototype.update
 
 The State update
 The first thing it does is call the update method on all actors, producing an array of updated actors. 
@@ -279,14 +276,14 @@ We map it and check for the single actor (coin, lava, player..).. the .update is
 actor.update(time, this, keys)  is the INDIVIDUAL update method of those classes of the actors, which have been created and added to them before ( with .prototype).
 It is passed with parameters for them which are not necessarily used by all classes in their methods. Only the player will actually read keys, since that’s the only actor that’s controlled by the keyboard.
 
-#### 17. Function Overlap
+#### 16. Function Overlap
 
 Overlap between actors is detected with the overlap function. It takes two
 actor objects and returns true when they touch, which is the case when they
 overlap both along the x-axis and along the y-axis.
 If the actors overlap the collide method updates the state. Touching lava will change the status to "lost".
 
-#### 18. Lava.prototype.collide, Coin.prototype.collide
+#### 17. Lava.prototype.collide, Coin.prototype.collide
 
 Then we create a method for colliding actors
 For the lava and the coins.
@@ -297,7 +294,7 @@ If touching the last coins the status is changed to "won"
 If there is no actor "coin" found with .some then the game is won
 The ! switches true to false .. so it shows me true when there are no more coins in the filtered array.
 
-#### 19. Lava.prototype.update, Coin.prototype.update
+#### 18. Lava.prototype.update, Coin.prototype.update
 
 Creating the update method for the moving actors
 The objects’ update methods for the actors, take as arguments the time step, the state object, and a keys object.
@@ -306,7 +303,7 @@ This update method (for the lava) calculates a new position by adding the produc
 
 For the coin : The wobble property is incremented to track time and then used as an argument to Math.sin to find the new position on the wave. The coin’s current position is then calculated from its base position and an offset based on this wave.
 
-#### 20. Player.prototype.update
+#### 19. Player.prototype.update
 
 Player motion is handled separately per axis because hitting the floor should not prevent horizontal motion, and hitting a wall should not stop falling or jumping motion.
 The horizontal motion is calculated based on the state of the left and right arrow keys.
@@ -315,7 +312,7 @@ Otherwise, the old position is kept.
 Vertical motion works similar but has to simulate jumping and gravity.
 The player’s vertical speed ( ySpeed ) is first anticipated to account for gravity.
 
-#### 21. Function trackKeys
+#### 20. Function trackKeys
 
 We want that the effect of the pressed key (moving the player figure) to stay active as long as they are held.
 We set up a key handler that stores the current state of the left, right, and up arrow keys. 
@@ -325,7 +322,7 @@ It registers event handlers for "keydown" and "keyup" events and, when the key c
 The same function is used for both event types. It checks if the key state should 
 be updated: to true = "keydown" or false = "keyup".
 
-#### 22. Function runAnimation
+#### 21. Function runAnimation
 
 To show and run the game the script uses requestAnimationFrame to schedule the animate function to run whenever the browser is ready to repaint the screen. 
 The animate function itself again calls requestAnimationFrame to schedule the next update. 
@@ -335,7 +332,7 @@ Using requestAnimationFrame requires us to track the time at which our function 
 We create a function (runAnimation) that wraps the time tracking function(frame) which needs a time difference as an argument and draws a single frame.
 When the frame function returns the value false, the animation stops.
 
-#### 23. Function runLevel
+#### 22. Function runLevel
 
 The runLevel function takes a Level object and a display constructor and returns a promise.
 It displays the level (in document.body) and lets the user play through it.
@@ -343,14 +340,14 @@ runLevel waits one more second (to let the user see what happens) and then clear
 tops the animation, and resolves the promise to the game’s end status.
 the switch for gameBlocker, prevents start of a new gameDisplay if playButton is clicked repeatedly while game is already running
 
-#### 24. Async function runGame
+#### 23. Async function runGame
 
 Whenever the player dies, the current level is restarted.
 The runGame function takes an array of level plans, which are strings, and a display constructor.
 Because runLevel returns a promise we can write runGame with async.
 It returns another promise, which resolves when the player finishes the game.
 
-#### 25. Function createHiScoreList
+#### 24. Function createHiScoreList
 
 We created a function to access the local storage and be able to display the High scores of the different players. 
 You have to enter a name in the playerName input to see your high score after the game is played.
@@ -358,7 +355,7 @@ It stores the name and the score of the player in the local storage and shows it
 has won or lost the game. 
 When the player plays a new game or a new plays the high score is not lost.
 
-#### 27. Function scoreFormatter
+#### 25. Function scoreFormatter
 
 Last but not least the Score Formatting
 created a function to set the digits of the score and the coins in the score bar. 
