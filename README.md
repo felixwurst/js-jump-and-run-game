@@ -77,9 +77,9 @@ The Code is commented more detailed and even has and extended Comment-sheet for 
 
 * [Function Overlap](#16.-Function-Overlap)
 
-* [Lava.prototype.collide, Coin.prototype.collide](#17.-Lava.prototype.collide,Coin.prototype.collide)
+* [Lava.prototype.collide, Coin.prototype.collide](#17.-Lava.prototype.collide,-Coin.prototype.collide)
 
-* [Lava.prototype.update, Coin.prototype.update](#18.-Lava.prototype.update,Coin.prototype.update)
+* [Lava.prototype.update, Coin.prototype.update](#18.-Lava.prototype.update,-Coin.prototype.update)
 
 * [Player.prototype.update](#19.-Player.prototype.update)
 
