@@ -45,55 +45,55 @@ The Code is commented more detailed and even has and extended Comment-sheet for 
 
 #### Content Table
 
-* [1. Class Level](#Class-Level)
+* [Class Level](#1.-Class-Level)
 
-* [2. Class State](#Class-State)
+* [Class State](#2.-Class-State)
 
-* [3. Class Vec](#Class-Vec)
+* [Class Vec](#3.-Class-Vec)
 
-* [4. Class Player](#Class-Player)
+* [Class Player](#4.-Class-Player)
 
-* [5. Class Coin](#Class-Coin)
+* [Class Coin](#5.-Class-Coin)
 
-* [6. Level Chars](#Level-Chars)
+* [Level Chars](#6.-Level-Chars)
 
-* [7. Function Elt](#Function-Elt)
+* [Function Elt](#7.-Function-Elt)
 
-* [8. Class DOMDisplay](#Class-DOMDisplay)
+* [Class DOMDisplay](#8.-Class-DOMDisplay)
 
-* [9. Function drawGrid](#Function-drawGrid)
+* [Function drawGrid](#9.-Function-drawGrid)
 
-* [10. Function drawActors](#Function-drawActors)
+* [Function drawActors](#10.-Function-drawActors)
 
-* [11. DOMDisplay.prototype.syncState](#DOMDisplay.prototype.syncState)
+* [DOMDisplay.prototype.syncState](#11.-DOMDisplay.prototype.syncState)
 
-* [12. DOMDisplay.prototype.scrollPlayerIntoView](#DOMDisplay.prototype.scrollPlayerIntoView)
+* [DOMDisplay.prototype.scrollPlayerIntoView](#12.-DOMDisplay.prototype.scrollPlayerIntoView)
 
-* [13. Level.prototype.touches](#Level.prototype.touches)
+* [Level.prototype.touches](#13.-Level.prototype.touches)
 
-* [14. Update method](#Update-method)
+* [Update method](#14.-Update-method)
 
-* [15. State.prototype.update](#State.prototype.update)
+* [State.prototype.update](#15.-State.prototype.update)
 
-* [16. Function Overlap](#Function-Overlap)
+* [Function Overlap](#16.-Function-Overlap)
 
-* [17. Lava.prototype.collide, Coin.prototype.collide](#Lava.prototype.collide,Coin.prototype.collide)
+* [Lava.prototype.collide, Coin.prototype.collide](#17.-Lava.prototype.collide,Coin.prototype.collide)
 
-* [18. Lava.prototype.update, Coin.prototype.update](#Lava.prototype.update,Coin.prototype.update)
+* [Lava.prototype.update, Coin.prototype.update](#18.-Lava.prototype.update,Coin.prototype.update)
 
-* [19. Player.prototype.update](#Player.prototype.update)
+* [Player.prototype.update](#19.-Player.prototype.update)
 
-* [20. Function trackKeys](#Function-trackKeys)
+* [Function trackKeys](#20.-Function-trackKeys)
 
-* [21. Function runAnimation](#Function-runAnimation)
+* [Function runAnimation](#21.-Function-runAnimation)
 
-* [22. Function runLevel](#Function-runLevel)
+* [Function runLevel](#22.-Function-runLevel)
 
-* [23. Async function runGame](#Async-function-runGame)
+* [Async function runGame](#23.-Async-function-runGame)
 
-* [24. Function createHiScoreList](#Function-createHiScoreList)
+* [Function createHiScoreList](#24.-Function-createHiScoreList)
 
-* [25. Function scoreFormatter](#Function-scoreFormatter)
+* [Function scoreFormatter](#25.-Function-scoreFormatter)
 
 
 
