@@ -2,7 +2,7 @@
 
 ## Creating a Jump & Run Game
 
-upfront: link to the finished project: https://fbw5-hamburg.github.io/js-g4/
+[Live Demo](https://felixwurst.github.io/js-jump-and-run-game/)
 
 Jump and Run Game with a Retro Design of the 2D 8-Bit Games of the 80’s.
 
