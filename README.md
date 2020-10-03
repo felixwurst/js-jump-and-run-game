@@ -1,6 +1,6 @@
-# Project: Build a Front-End Application with Vanilla JavaScript
+# Project: Jump & Run Game
 
-## Creating a Jump & Run Game
+## Build a Front-End Application with Vanilla JavaScript
 
 [Live Demo](https://felixwurst.github.io/js-jump-and-run-game/)
 
