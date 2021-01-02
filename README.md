@@ -4,7 +4,7 @@
 
 [Live Demo](https://felixwurst.github.io/js-jump-and-run-game/)
 
-Jump & Run Game with a Retro Design of the 2D 8-Bit Games of the 80’s.
+Jump & run game with a retro design of the 2D 8-bit games of the 80’s.
 
 The player will have to conquer different levels in which she/he will have to collect all coins and avoid being burned by lava to be able to get into the next level.
 If the player touches lava, the current level is restored to its starting position, and the player may try again.
