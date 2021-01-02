@@ -2,7 +2,7 @@
 
 ## Build a Frontend Application with Vanilla JavaScript
 
-[Live Demo](https://felixwurst.github.io/js-jump-and-run-game/)
+[Live Demo](https://felixwurst.github.io/project-jump-and-run-game/)
 
 Jump & run game with a retro design of the 2D 8-bit games of the 80’s.
 
