@@ -1,12 +1,12 @@
 # Project: Jump & Run Game
 
-## Build a Front-End Application with Vanilla JavaScript
+## Build a Frontend Application with Vanilla JavaScript
 
 [Live Demo](https://felixwurst.github.io/js-jump-and-run-game/)
 
-Jump and Run Game with a Retro Design of the 2D 8-Bit Games of the 80’s.
+Jump & Run Game with a Retro Design of the 2D 8-Bit Games of the 80’s.
 
-The Player will have to conquer different levels in which she/he will have to collect all coins and avoid being burned by lava to be able to get into the next level.
+The player will have to conquer different levels in which she/he will have to collect all coins and avoid being burned by lava to be able to get into the next level.
 If the player touches lava, the current level is restored to its starting position, and the player may try again.
 
 We want to create a structured foundation for a jump and run game.
